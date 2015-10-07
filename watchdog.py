@@ -59,27 +59,24 @@ for element in root.iter("cputemp"):
     #print dtt2timestamp(datetime.datetime.now().time())
     print float(element.text)
     print "rightnow - max = ", rightnow, " - ", float(element.text), " = ", rightnow-float(element.text)
+
+
+    ts = time.time()  
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')  
+    f = open('/home/pi/watchdog.log', 'a')  
+    f.write(st)  
+
     if (rightnow-float(element.text))>0.01:
-        print "reboot"
-
-#        ts = time.time()  
-#        st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')  
-#        now = datetime.datetime.now().toordinal()-Period
- 
- 
-#        f = open('/home/pi/watchdog.log', 'a')  
-        # write the timestamp and text to the file  
-#        f.write(st)  
-#        f.write(' : REBOOT command issued\n') 
-#        f.close()
-
+        f.write(' : cputemp expired - REBOOT command issued\n') 
+        print "cputemp expired - REBOOT command issued\n"
         command = "/usr/bin/sudo /sbin/shutdown -r now"
 #        sys.stderr.write('sql statements set\n')
-        #process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-        #output = process.communicate()[0]
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        output = process.communicate()[0]
         print output
 
     else:
-        print "OK"
-
+        print "cputemp has not expired - no need to reboot\n"
+        f.write(" : cputemp has not expired - no need to reboot\n") 
+    f.close()
 
