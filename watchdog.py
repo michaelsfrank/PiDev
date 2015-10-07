@@ -17,6 +17,9 @@ import requests
 import datetime
 import time
 import subprocess
+import socket
+
+print "socket.gethostname(): ", socket.gethostname()
 
 def dtt2timestamp(dtt):
     ts = (dtt.hour * 60 + dtt.minute) * 60 + dtt.second
@@ -28,7 +31,7 @@ def dtt2timestamp(dtt):
     return result
 
 
-page = requests.get('http://frafle.ddns.net/cgi-bin/table-age-cpu2.py?Table=Systems_Pi2_Temp_CPUTemp')
+page = requests.get('http://frafle.ddns.net/cgi-bin/table-age-cpu2.py?Table=Systems_{0}_Temp_CPUTemp'.format(socket.gethostname()))
 
 # http://lxml.de/lxmlhtml.html
 root = html.fromstring(page.text)
@@ -49,7 +52,7 @@ root = html.fromstring(page.text)
 rightnow = float( datetime.datetime.now().toordinal() + dtt2timestamp(datetime.datetime.now().time()) )
 print "rightnow = ", rightnow
 
-for element in root.iter("systems_pi2_temp_cputemp"):
+for element in root.iter("cputemp"):
     print("%s - %s" % (element.tag, element.text))
     print float(datetime.datetime.now().toordinal()+dtt2timestamp(datetime.datetime.now().time()))
     #print datetime.datetime.now().time()
@@ -72,8 +75,8 @@ for element in root.iter("systems_pi2_temp_cputemp"):
 
         command = "/usr/bin/sudo /sbin/shutdown -r now"
 #        sys.stderr.write('sql statements set\n')
-        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
-        output = process.communicate()[0]
+        #process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+        #output = process.communicate()[0]
         print output
 
     else:
