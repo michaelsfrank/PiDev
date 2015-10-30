@@ -28,7 +28,7 @@ echo "[$NOW] persist.sh launched" >> $LOGFILE
 logger=`ps -ef | grep Logger | grep -v grep`
 if [ ! "$logger" ]; then
 	echo "[$NOW] Logger is NOT running" >> $LOGFILE
-	sudo ./Logger/Logger &
+#	sudo ./Logger/Logger &
 else
 	echo "[$NOW] Logger is running" >> $LOGFILE
 fi
@@ -95,7 +95,7 @@ case $(hostname -s) in
     mqtt=`netstat -tulpn | grep 22883 | grep -v grep`
     if [ ! "$mqtt" ]; then
         echo "[$NOW] SSH MQTT port 22883 is not open!!!!!!!!!!!!!!!!!!!!!!!!!!" >> $LOGFILE
-        ssh -f -L \*:22883:127.0.0.1:1883 pi@192.168.1.215 -p 2005 -N -i /home/pi/.ssh/id_rsa 2>> $LOGFILE &
+        ssh -f -L \*:22883:127.0.0.1:1883 pi@192.168.1.205 -p 2005 -N -i /home/pi/.ssh/id_rsa 2>> $LOGFILE &
     else
         echo "[$NOW] SSH MQTT port 22883 is open" >> $LOGFILE
     fi
