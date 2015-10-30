@@ -28,7 +28,7 @@ echo "[$NOW] persist.sh launched" >> $LOGFILE
 logger=`ps -ef | grep Logger | grep -v grep`
 if [ ! "$logger" ]; then
 	echo "[$NOW] Logger is NOT running" >> $LOGFILE
-#	sudo ./Logger/Logger &
+	sudo ./Logger/Logger &
 else
 	echo "[$NOW] Logger is running" >> $LOGFILE
 fi
@@ -90,6 +90,8 @@ case $(hostname -s) in
     echo Pi3
 
     ;;
+
+  #need to run the ssh command manually from command line to accept ECDSA change and avoid "Host key verification failed."
   Pi5)
     echo Pi5
     mqtt=`netstat -tulpn | grep 22883 | grep -v grep`

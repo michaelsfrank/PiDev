@@ -30,7 +30,6 @@ def dtt2timestamp(dtt):
     #print ts, " / ", total, " = ", result
     return result
 
-
 page = requests.get('http://frafle.ddns.net/cgi-bin/table-age-cpu2.py?Table=Systems_{0}_Temp_CPUTemp'.format(socket.gethostname()))
 
 # http://lxml.de/lxmlhtml.html
@@ -60,16 +59,14 @@ ts = time.time()
 st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 f = open('/home/pi/watchdog.log', 'a')
 f.write(st)
-f.write(' - {0} - cputemp expired - REBOOT command issued\n'.format(socket.gethostname()))
 
 for element in root.iter("cputemp"):
     if (rightnow-float(element.text))>0.01:
-        f.write(' : cputemp expired - REBOOT command issued\n') 
+        f.write(': cputemp expired - REBOOT command issued\n')
         #print("element.tag=%s - element.text=%s" % (element.tag, element.text))
         #print float(element.text)
-        print "rightnow - max = ", rightnow, " - ", float(element.text), " = ", rightnow-float(element.text)
-
-        print "cputemp expired - REBOOT command issued\n"
+        print st, "rightnow - max = ", rightnow, " - ", float(element.text), " = ", rightnow-float(element.text)
+        print st, "cputemp expired - REBOOT command issued\n"
         command = "/usr/bin/sudo /sbin/shutdown -r now"
 #        sys.stderr.write('sql statements set\n')
         process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
@@ -77,7 +74,7 @@ for element in root.iter("cputemp"):
         print output
 
     else:
-        print "cputemp has not expired - no need to reboot\n"
-        f.write(" : cputemp has not expired - no need to reboot\n") 
-    f.close()
+        print st, ": cputemp has not expired - no need to reboot\n"
+        f.write(": cputemp has not expired - no need to reboot\n") 
+f.close()
 
