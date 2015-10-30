@@ -49,25 +49,26 @@ root = html.fromstring(page.text)
 #    for subchild in child:
 #        print "    subchild: ", subchild
 
+#print datetime.datetime.now().time()
+#print dtt2timestamp(datetime.datetime.now().time())
+#print float(datetime.datetime.now().toordinal()+dtt2timestamp(datetime.datetime.now().time()))
+
 rightnow = float( datetime.datetime.now().toordinal() + dtt2timestamp(datetime.datetime.now().time()) )
 print "rightnow = ", rightnow
 
+ts = time.time()
+st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+f = open('/home/pi/watchdog.log', 'a')
+f.write(st)
+f.write(' - {0} - cputemp expired - REBOOT command issued\n'.format(socket.gethostname()))
+
 for element in root.iter("cputemp"):
-    print("%s - %s" % (element.tag, element.text))
-    print float(datetime.datetime.now().toordinal()+dtt2timestamp(datetime.datetime.now().time()))
-    #print datetime.datetime.now().time()
-    #print dtt2timestamp(datetime.datetime.now().time())
-    print float(element.text)
-    print "rightnow - max = ", rightnow, " - ", float(element.text), " = ", rightnow-float(element.text)
-
-
-    ts = time.time()  
-    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')  
-    f = open('/home/pi/watchdog.log', 'a')  
-    f.write(st)  
-
     if (rightnow-float(element.text))>0.01:
         f.write(' : cputemp expired - REBOOT command issued\n') 
+        #print("element.tag=%s - element.text=%s" % (element.tag, element.text))
+        #print float(element.text)
+        print "rightnow - max = ", rightnow, " - ", float(element.text), " = ", rightnow-float(element.text)
+
         print "cputemp expired - REBOOT command issued\n"
         command = "/usr/bin/sudo /sbin/shutdown -r now"
 #        sys.stderr.write('sql statements set\n')

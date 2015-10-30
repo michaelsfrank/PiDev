@@ -51,7 +51,7 @@ case $(hostname -s) in
   Pi1)
     echo Pi1
     autossh9931=`ps -ef | grep autossh | grep -v grep | grep 9931`
-    autossh9941=`ps -ef | grep autossh | grep -v grep | grep 9941`
+    autossh9951=`ps -ef | grep autossh | grep -v grep | grep 9951`
     if [ ! "$autossh9931" ]; then
             echo "[$NOW] autossh is not running on port 9931... starting autossh on port 9931" >> $LOGFILE
             autossh -M 0 -q -f -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -v -R \*:9931:localhost:2001 frafle.ddns.net -p 2003 2>> autossh_9931.log &
@@ -59,18 +59,18 @@ case $(hostname -s) in
             echo "[$NOW] autossh is running on port 9931" >> $LOGFILE
     fi
 
-    if [ ! "$autossh9941" ]; then
-            echo "[$NOW] autossh is not running on port 9941... starting autossh on port 9941" >> $LOGFILE
-            autossh -M 0 -q -f -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -v -R \*:9941:localhost:2001 frafle.ddns.net -p 2004 2>> autossh_9941.log &
+    if [ ! "$autossh9951" ]; then
+            echo "[$NOW] autossh is not running on port 9951... starting autossh on port 9951" >> $LOGFILE
+            autossh -M 0 -q -f -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -v -R \*:9951:localhost:2001 frafle.ddns.net -p 2005 2>> autossh_9951.log &
     else
-            echo "[$NOW] autossh is running on port 9941" >> $LOGFILE
+            echo "[$NOW] autossh is running on port 9951" >> $LOGFILE
     fi
 
     ;;
   Pi2)
     echo Pi2
     autossh9932=`ps -ef | grep autossh | grep -v grep | grep 9932`
-    autossh9942=`ps -ef | grep autossh | grep -v grep | grep 9942`
+    autossh9952=`ps -ef | grep autossh | grep -v grep | grep 9952`
     if [ ! "$autossh9932" ]; then
             echo "[$NOW] autossh is not running on port 9932... starting autossh on port 9932" >> $LOGFILE
             autossh -M 0 -q -f -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -v -R \*:9932:localhost:2002 frafle.ddns.net -p 2003 2>> autossh_9932.log &
@@ -78,11 +78,11 @@ case $(hostname -s) in
             echo "[$NOW] autossh is running on port 9932" >> $LOGFILE
     fi
 
-    if [ ! "$autossh9942" ]; then
-            echo "[$NOW] autossh is not running on port 9942... starting autossh on port 9942" >> $LOGFILE
-            autossh -M 0 -q -f -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -v -R \*:9942:localhost:2002 frafle.ddns.net -p 2004 2>> autossh_9942.log &
+    if [ ! "$autossh9952" ]; then
+            echo "[$NOW] autossh is not running on port 9952... starting autossh on port 9952" >> $LOGFILE
+            autossh -M 0 -q -f -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -v -R \*:9952:localhost:2002 frafle.ddns.net -p 2005 2>> autossh_9952.log &
     else
-            echo "[$NOW] autossh is running on port 9942" >> $LOGFILE
+            echo "[$NOW] autossh is running on port 9952" >> $LOGFILE
     fi
 
     ;;
@@ -90,12 +90,12 @@ case $(hostname -s) in
     echo Pi3
 
     ;;
-  Pi4)
-    echo Pi4
+  Pi5)
+    echo Pi5
     mqtt=`netstat -tulpn | grep 22883 | grep -v grep`
     if [ ! "$mqtt" ]; then
         echo "[$NOW] SSH MQTT port 22883 is not open!!!!!!!!!!!!!!!!!!!!!!!!!!" >> $LOGFILE
-        ssh -f -L \*:22883:127.0.0.1:1883 pi@192.168.1.214 -p 2004 -N -i /home/pi/.ssh/id_rsa 2>> $LOGFILE &
+        ssh -f -L \*:22883:127.0.0.1:1883 pi@192.168.1.215 -p 2005 -N -i /home/pi/.ssh/id_rsa 2>> $LOGFILE &
     else
         echo "[$NOW] SSH MQTT port 22883 is open" >> $LOGFILE
     fi
